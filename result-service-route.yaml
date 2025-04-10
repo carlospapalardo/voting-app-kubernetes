@@ -1,0 +1,14 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: result-service-route
+  namespace: voting
+spec:
+  entryPoints:
+    - web
+  routes:
+  - match: Host(`result.k8s.com`)
+    kind: Rule
+    services:
+    - name: result-service
+      port: 80
