@@ -1,58 +1,15 @@
-#---
-#apiVersion: v1
-#kind: Service
-#metadata:
-#  name: voting-service
-#  labels:
-#    name: voting-service
-#    app: demo-voting-app
-#spec:
-#  ports:
-#  - port: 80
-#    targetPort: 80
-#  selector:
-#    name: voting-app-pod
-#    app: demo-voting-app
-apiVersion: traefik.io/v1alpha1
-kind: IngressRoute
+---
+apiVersion: v1
+kind: Service
 metadata:
-  name: voting-service-route
-  namespace: voting
+  name: voting-service
+  labels:
+    name: voting-service
+    app: demo-voting-app
 spec:
-  entryPoints:
-    - web
-  routes:
-  - kind: Rule
-    match: Host(`voting.k8s.com`)
-    priority: 10
-    middlewares:
-    - name: middleware
-      namespace: voting
-    observability:
-      accesslogs: true
-      metrics: true
-      tracing: true
-    services:
-    - kind: Service
-      name: voting-service
-      namespace: voting
-      passHostHeader: true
-      port: 80
-      responseForwarding:
-        flushInterval: 1ms
-      serversTransport: transport
-      healthCheck:
-        path: /health
-        interval: 15s
-      sticky:
-        cookie:
-          httpOnly: true
-          name: voting-cookie
-          secure: false
-          sameSite: none
-          maxAge: 3600  
-          path: /
-      strategy: RoundRobin
-      weight: 10
-      nativeLB: true
-      nodePortLB: true
+  ports:
+  - port: 80
+    targetPort: 80
+  selector:
+    name: voting-app-pod
+    app: demo-voting-app
