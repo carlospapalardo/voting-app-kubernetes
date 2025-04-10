@@ -7,15 +7,8 @@ spec:
   entryPoints:
     - web
   routes:
-  - kind: Rule
-    match: Host(`voting.k8s.com`)
-    priority: 10
-    observability:
-      accesslogs: true
-      metrics: true
-      tracing: true
+  - match: Host(`voting.k8s.com`)
+    kind: Rule
     services:
-    - kind: Service
-      name: voting-service
-      namespace: voting
+    - name: voting-service
       port: 80
