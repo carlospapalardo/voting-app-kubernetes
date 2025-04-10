@@ -10,9 +10,6 @@ spec:
   - kind: Rule
     match: Host(`voting.k8s.com`)
     priority: 10
-    middlewares:
-    - name: middleware
-      namespace: voting
     observability:
       accesslogs: true
       metrics: true
@@ -21,23 +18,4 @@ spec:
     - kind: Service
       name: voting-service
       namespace: voting
-      passHostHeader: true
       port: 80
-      responseForwarding:
-        flushInterval: 1ms
-      serversTransport: transport
-      healthCheck:
-        path: /health
-        interval: 15s
-      sticky:
-        cookie:
-          httpOnly: true
-          name: voting-cookie
-          secure: false
-          sameSite: none
-          maxAge: 3600  
-          path: /
-      strategy: RoundRobin
-      weight: 10
-      nativeLB: true
-      nodePortLB: true
